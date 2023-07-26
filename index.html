@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Video</title>
+
+    <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+    <div class="wrapper">
+        <div class="container">
+            <!-- short video -->
+            <div class="content">
+                <!--test pause || play & mute -->
+                <!-- <div class="feature">
+                    <div class="feature-items">
+                        <div class="feature-item">
+                            <div class="info">
+                                avatar
+                            </div>
+                        </div>
+                        <div class="feature-item">
+                            <div class="feature-control">
+                                <div class="feature-control_playPause">
+                                    <button id="play-pause">Play</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div> -->
+
+                <!-- list video -->
+                <div class="content-video">                   
+                    <div class="i-video active" >
+                        <video id="video1" class="myVideo">
+                            <source src="./video/y2mate.com - Bắt cá dưới đáy biển   Vlog 1  vlog1_1080pFHR.mp4" type="video/mp4">
+                        </video>
+                    </div>
+                    
+                    <div class="i-video">
+                        <video id="video2" class="myVideo">
+                            <source src="./video/357824950_611204677658547_492387188491890855_n.mp4" type="video/mp4">
+                        </video>
+                    </div>
+
+                    <div class="i-video" >
+                        <video id="video3" class="myVideo">
+                            <source src="./video/358704878_590697203193654_4903544634587363891_n.mp4" type="video/mp4">
+                        </video>
+                    </div>
+
+                    <div class="i-video" >
+                        <video id="video4" class="myVideo">
+                            <source id="video4" src="./video/video-test-4.mp4">
+                        </video>
+                    </div>
+                </div>
+
+                <!--TEST line-play -->
+                <!-- <div class="line-play" id="playPauseBtn" onclick="playPauseVideo()"></div> -->
+
+                <!-- prev & next video -->
+                <div class="control">
+                    <div id="prev" class="btn btn-prev" onclick="prevVideo()">
+                        <img src="./icon/prev.svg" alt="" class="btn-img">
+                    </div>
+                    <div id="next" class="btn btn-next" onclick="nextVideo()">
+                        <img src="./icon/next.svg" alt="" class="btn-img">
+                    </div>
+                </div>
+
+                
+            </div>
+        </div>        
+    </div>
+</body>
+
+<!-- sử dụng prev và next để qua lại video -->
+<script>
+var videoIndex = 0;
+var sVideos = document.getElementsByClassName("i-video");
+var control = document.querySelector(".control");
+
+function showSlide(sVideoNum) {
+    for (var i = 0; i < sVideos.length; i++) {
+        sVideos[i].classList.remove("active");
+    }
+
+    sVideos[sVideoNum].classList.add("active");
+
+    // Hiển thị hoặc ẩn nút prev/next phù hợp với video hiện tại
+    var prevButton = document.getElementsByClassName("btn-prev")[0];
+    var nextButton = document.getElementsByClassName("btn-next")[0];
+
+    if (sVideoNum === 0) {
+        prevButton.style.display = "none";
+        control.classList.add("ju-right");
+    } else {
+        prevButton.style.display = "flex";
+        control.classList.remove("ju-right");
+    }
+
+    if (sVideoNum === sVideos.length - 1) {
+        nextButton.style.display = "none";
+    } else {
+        nextButton.style.display = "flex";
+    }
+}
+
+function prevVideo() {
+    if (videoIndex > 0) {
+        videoIndex--;
+    }
+    showSlide(videoIndex);
+    playPrevVideo()
+}
+
+function nextVideo() {
+    if (videoIndex < sVideos.length - 1) {
+        videoIndex++;
+    }
+    showSlide(videoIndex);
+    playNextVideo()
+}
+
+showSlide(videoIndex);
+</script>
+
+<!-- dừng video khi sang video khác và tự động phát video-->
+<script>
+var videos = document.getElementsByTagName('video');
+var currentVideoIndex = 0;
+
+function playVideo(index) {
+    videos[currentVideoIndex].pause();
+    currentVideoIndex = index;
+    videos[currentVideoIndex].play();
+}
+
+function playPrevVideo() {
+    videos[currentVideoIndex].currentTime = 0;  //video chạy lại từ đầu
+    videos[currentVideoIndex].pause();
+    currentVideoIndex = (currentVideoIndex - 1 + videos.length) % videos.length;
+    videos[currentVideoIndex].play();
+}
+
+function playNextVideo() {
+    videos[currentVideoIndex].currentTime = 0;  //video chạy lại từ đầu
+    videos[currentVideoIndex].pause();
+    currentVideoIndex = (currentVideoIndex + 1) % videos.length;
+    videos[currentVideoIndex].play();
+}
+</script>
+
+<!-- khi video phát click vào sẽ dừng và ngược lại-->
+<script>
+var videoElements = document.getElementsByClassName('myVideo');
+
+for (var i = 0; i < videoElements.length; i++) {
+    videoElements[i].addEventListener('click', toggleVideo);
+}
+
+function toggleVideo(event) {
+    var video = event.target;
+
+    if (video.paused) {
+        video.play();
+    } else {
+        video.pause();
+    }    
+}
+
+</script>
+
+<!-- video đầu tiên tự động chạy -->
+<script>
+var firstVideo = document.getElementById('video1');
+window.onload = function() {
+    firstVideo.play();
+};
+</script>
+
+</html>
